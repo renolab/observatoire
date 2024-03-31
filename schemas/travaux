@@ -1,0 +1,841 @@
+$id: https://schemas.renolab.com/travaux
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Travaux
+type: object
+properties:
+  nature:
+    $ref: "#/$defs/nature des travaux"
+  adresse:
+    title: Adresse
+    type: object
+    properties:
+      ban id:
+        title: Identifiant de l'adresse dans la Base Adresse Nationale
+        type: [string, "null"]
+      rnb id:
+        title: Identifiant du bâtiment depuis le Registre National du Bâtiment
+        type: [string, "null"]
+      code postal:
+        title: Code postal
+        type: string
+        pattern: ^([02][1-9]|[12345678][0-9]|9[012345]|97[12346])[0-9]{3}$
+      code insee:
+        title: Code INSEE
+        type: string
+        pattern: ^([02][1-9]|2[AB]|[1345678][0-9]|9[012345]|97[12346])[0-9]{3}$
+    required:
+      - ban id
+      - rnb id
+      - code postal
+      - code insee
+  date d'engagement:
+    title: Date d'engagement
+    type: string
+    format: date
+  date de livraison:
+    title: Date de livraison des travaux
+    type: string
+    format: date
+  travaux accompagnés:
+    title: Travaux bénéficiant d'un accompagnement par un organisme agréé
+    type: boolean
+  installateur:
+    title: Entreprise ayant assuré la réalisation des travaux
+    type: object
+    properties:
+      raison sociale:
+        title: Raison sociale
+        type: string
+      siret:
+        $ref: "#/$defs/siret"
+    required:
+      - raison sociale
+      - siret
+required:
+  - nature
+  - adresse
+  - date d'engagement
+  - date de livraison
+  - travaux accompagnés
+  - installateur
+discriminator:
+  propertyName: nature
+oneOf:
+  - type: object
+    properties:
+      nature:
+        const: "isolation des combles et toitures . isolation des planchers de combles perdus"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des combles et toitures . isolation des planchers de combles perdus"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des combles et toitures . isolation des rampants de toiture par l'extérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des combles et toitures . isolation des rampants de toiture par l'extérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des combles et toitures . isolation des rampants de toiture par l'intérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des combles et toitures . isolation des rampants de toiture par l'intérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des combles et toitures . isolation d'une toiture terrasse par l'extérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des combles et toitures . isolation d'une toiture terrasse par l'extérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des murs . isolation des murs par l'extérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des murs . isolation des murs par l'extérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des murs . isolation des murs par l'intérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des murs . isolation des murs par l'intérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des planchers . isolation d'un plancher par l'extérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des planchers . isolation d'un plancher par l'extérieur"
+  - type: object
+    properties:
+      nature:
+        const: "isolation des planchers . isolation d'un plancher par l'intérieur"
+    required:
+      - nature
+    allOf:
+      - $ref: "#/$defs/isolation des planchers . isolation d'un plancher par l'intérieur"
+$defs:
+  adresse:
+    title: Adresse
+    description: Adresse au format BAN
+    type: object
+    properties:
+      ban id:
+        title: Identifiant de l'adresse dans la Base Adresse Nationale
+        type: [string, "null"]
+      rnb id:
+        title: Identifiant du bâtiment depuis le Registre National du Bâtiment
+        type: [string, "null"]
+      code postal:
+        title: Code postal
+        type: string
+        pattern: ^([02][1-9]|[12345678][0-9]|9[012345]|97[12346])[0-9]{3}$
+      code insee:
+        title: Code INSEE
+        type: string
+        pattern: ^([02][1-9]|2[AB]|[1345678][0-9]|9[012345]|97[12346])[0-9]{3}$
+    required:
+      - ban id
+      - rnb id
+      - code postal
+      - code insee
+  siren:
+    title: Numéro de SIREN
+    type: string
+    pattern: ^[0-9]{9,9}$
+  siret:
+    title: Numéro de SIRET
+    type: string
+    pattern: ^[0-9]{14,14}$
+  isolant . surface:
+    title: Surface d'isolant posé
+    description: Dans le cas d'une pose superposée de plusieurs isolants, indiquer la surface résultant de la superposition des isolants
+    type: number
+    minimum: 0
+  isolant . résistance thermique:
+    title: Résistance thermique
+    description: Dans le cas d'une pose superposée de plusieurs isolants, indiquer la résistance thermique globale
+    type: number
+    minimum: 0
+  isolant . épaisseur:
+    title: Épaisseur de l'isolant (mm)
+    description: Dans le cas d'une pose superposée de plusieurs isolants, indiquer l'épaisseur moyenne
+    type: number
+    minimum: 0
+  isolant . pose d'un pare-vapeur:
+    title: Pose d'un pare-vapeur
+    type: boolean
+  ouvrant . coefficient de transmission surfacique:
+    title: Coefficient de transmission surfacique (W/m².K)
+    type: number
+    minimum: 0
+  ouvrant . facteur solaire:
+    title: Facteur solaire
+    type: number
+    minimum: 0
+  ouvrant . surface totale:
+    title: Surface totale des ouvrants posés (m²)
+    type: number
+    minimum: 0
+  équipement . puissance nominale:
+    title: Puissance nominale de la chaudière (kW)
+    type: number
+    minimum: 0
+  équipement . efficacité énergétique saisonnière:
+    title: Efficacité énergétique saisonnière (ηs) en %
+    type: number
+    minimum: 0
+  équipement . rendement PCI nominal:
+    title: Rendement PCI nominal en %
+    type: number
+    minimum: 0
+  équipement . label flamme verte:
+    title: L'équipement possède le label Flamme Verte
+    type: boolean
+  équipement . coefficient de performance:
+    title: Coefficient de performance - COP
+    type: number
+    minimum: 0
+  équipement . coefficient de performance saisonnier:
+    title: Coefficient de performance - SCOP
+    type: number
+    minimum: 0
+  équipement . surface chauffée:
+    title: Surface chauffée
+    type: number
+    minimum: 0
+  équipement . surface ventilée:
+    title: Surface ventilée
+    type: number
+    minimum: 0
+  équipement . usage:
+    title: Usages de l'équipement
+    type: string
+    enum:
+      - chauffage
+      - eau chaude sanitaire
+      - chauffage et eau chaude sanitaire
+  nature des travaux:
+    title: Nature des travaux
+    type: string
+    enum:
+      - "chauffage et eau chaude sanitaire . chaudières . chaudière biomasse"
+      - "chauffage et eau chaude sanitaire . chaudières . chaudière gaz"
+      - "chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-bain"
+      - "chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-eau solaire"
+      - "chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-eau thermodynamique"
+      - "chauffage et eau chaude sanitaire . émetteurs . émetteur électrique"
+      - "chauffage et eau chaude sanitaire . émetteurs . plancher chauffant basse température"
+      - "chauffage et eau chaude sanitaire . émetteurs . radiateur basse température"
+      - "chauffage et eau chaude sanitaire . poêles et inserts . insert bois"
+      - "chauffage et eau chaude sanitaire . poêles et inserts . poêle bois"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur air/air"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur air/eau"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur eau/eau"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur hybride"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur sol/eau"
+      - "chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur hybride"
+      - "chauffage et eau chaude sanitaire . réseaux de chaleur . raccordement à un réseau de chaleur"
+      - "chauffage et eau chaude sanitaire . systèmes solaires . système solaire combiné"
+      - "chauffage et eau chaude sanitaire . systèmes solaires . système solaire hybride"
+      - "isolation des combles et toitures . isolation des planchers de combles perdus"
+      - "isolation des combles et toitures . isolation des rampants de toiture par l'extérieur"
+      - "isolation des combles et toitures . isolation des rampants de toiture par l'intérieur"
+      - "isolation des combles et toitures . isolation d'une toiture terrasse par l'extérieur"
+      - "isolation des murs . isolation des murs par l'extérieur"
+      - "isolation des murs . isolation des murs par l'intérieur"
+      - "isolation des planchers . isolation d'un plancher par l'extérieur"
+      - "isolation des planchers . isolation d'un plancher par l'intérieur"
+      - "ouvrants . fenêtre de toit isolante"
+      - "ouvrants . fenêtre et porte-fenêtre isolante"
+      - "ouvrants . porte isolante"
+      - "protections solaires . fermeture isolante"
+      - "protections solaires . protection solaire des façades"
+      - "protections solaires . protection solaire des ouvrants"
+      - "protections solaires . protection solaire d'une toiture"
+      - "refroidissement . climatiseur"
+      - "refroidissement . brasseur d'air"
+      - "refroidissement . raccordement à un réseau de froid"
+      - "régulation . dispositif d'affichage et d'interprétation des consommations d'énergie"
+      - "régulation . régulation par sonde de température extérieure"
+      - "régulation . robinet thermostatique"
+      - "régulation . système de comptage individuel d'énergie de chauffage"
+      - "régulation . système de régulation par programmation d'intermittence"
+      - "régulation . système de régulation de la consommation d'un chauffe-eau électrique à effet Joule"
+      - "réseau . abaissement de la température de retour vers un réseau de chaleur"
+      - "réseau . conduit d'évacuation des produits de combustion"
+      - "réseau . désambouage d'un réseau de chauffage"
+      - "réseau . désambouage d'un réseau d'eau chaude sanitaire"
+      - "réseau . isolation d'un réseau de chauffage"
+      - "réseau . isolation d'un réseau d'eau chaude sanitaire"
+      - "réseau . optimiseur de relance"
+      - "réseau . récupérateur de chaleur à condensation"
+      - "réseau . système de variation électronique de vitesse sur une pompe"
+      - "ventilation . puit canadien"
+      - "ventilation . puit provençal"
+      - "ventilation . ventilation hybride"
+      - "ventilation . ventilation mécanique double flux"
+      - "ventilation . ventilation mécanique répartie"
+      - "ventilation . ventilation mécanique simple flux"
+  chauffage et eau chaude sanitaire . chaudières . chaudière biomasse:
+    title: Chaudière biomasse
+    type: object
+    properties:
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      label flamme verte:
+        $ref: "#/$defs/équipement . label flamme verte"
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - puissance nominale
+      - efficacité énergétique saisonnière
+      - label flamme verte
+      - usage
+  chauffage et eau chaude sanitaire . chaudières . chaudière gaz:
+    title: Chaudière gaz
+    type: object
+    properties:
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - puissance nominale
+      - efficacité énergétique saisonnière
+      - usage
+  chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-bain:
+    title: Chauffe-bain
+    type: object
+    properties:
+      rendement PCI nominal:
+        $ref: "#/$defs/équipement . rendement PCI nominal"
+    required:
+      - rendement PCI nominal
+  chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-eau solaire:
+    title: Chauffe-eau solaire
+    type: object
+    properties:
+      superficie des capteurs solaires:
+        title: Superficie hors-tout totale de capteurs solaires posés en m²
+        type: number
+        minimum: 0
+      efficacité énergétique:
+        title: Efficacité énergétique pour le chauffage de l'eau exprimée en %
+        type: number
+        minimum: 0
+    required:
+      - superficie des capteurs solaires
+      - efficacité énergétique
+  chauffage et eau chaude sanitaire . chauffe-eaux . chauffe-eau thermodynamique:
+    title: Chauffe-eau thermodynamique
+    type: object
+    properties:
+      coefficient de performance:
+        $ref: "#/$defs/équipement . coefficient de performance"
+    required:
+      - coefficient de performance
+  chauffage et eau chaude sanitaire . émetteurs . émetteur électrique:
+    title: Émetteur électrique
+    type: object
+    properties:
+      nombre d'appareils installés:
+        title: Nombre d'appareils installés
+        type: integer
+        minimum: 1
+    required:
+      - nombre d'appareils installés
+  chauffage et eau chaude sanitaire . émetteurs . plancher chauffant basse température:
+    title: Plancher chauffant basse température
+    type: object
+    properties:
+      surface chauffée:
+        $ref: "#/$defs/équipement . surface chauffée"
+    required:
+      - surface chauffée
+  chauffage et eau chaude sanitaire . émetteurs . radiateur basse température:
+    title: Radiateur basse température
+    type: object
+    properties:
+      nombre d'appareils installés:
+        title: Nombre d'appareils installés
+        type: integer
+        minimum: 1
+    required:
+      - nombre d'appareils installés
+  chauffage et eau chaude sanitaire . poêles et inserts . insert bois:
+    title: Insert bois
+    type: object
+    properties:
+      nombre d'appareils installés:
+        title: Nombre d'appareils installés
+        type: integer
+        minimum: 1
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      label flamme verte:
+        $ref: "#/$defs/équipement . label flamme verte"
+    required:
+      - nombre d'appareils installés
+      - efficacité énergétique saisonnière
+      - label flamme verte
+  chauffage et eau chaude sanitaire . poêles et inserts . poêle bois:
+    title: Poêle bois
+    type: object
+    properties:
+      nombre d'appareils installés:
+        title: Nombre d'appareils installés
+        type: integer
+        minimum: 1
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      label flamme verte:
+        $ref: "#/$defs/équipement . label flamme verte"
+    required:
+      - nombre d'appareils installés
+      - efficacité énergétique saisonnière
+      - label flamme verte
+  chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur air/air:
+    title: Pompe à chaleur air/air
+    type: object
+    properties:
+      surface chauffée:
+        $ref: "#/$defs/équipement . surface chauffée"
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      coefficient de performance saisonnier:
+        $ref: "#/$defs/équipement . coefficient de performance saisonnier"
+    required:
+      - surface chauffée
+      - puissance nominale
+      - efficacité énergétique saisonnière
+  chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur air/eau:
+    title: Pompe à chaleur air/eau
+    type: object
+    properties:
+      surface chauffée:
+        $ref: "#/$defs/équipement . surface chauffée"
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - surface chauffée
+      - puissance nominale
+      - efficacité énergétique saisonnière
+      - usage
+  chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur hybride:
+    title: Pompe à chaleur hybride
+    type: object
+    properties:
+      surface chauffée:
+        $ref: "#/$defs/équipement . surface chauffée"
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - surface chauffée
+      - puissance nominale
+      - efficacité énergétique saisonnière
+      - usage
+  chauffage et eau chaude sanitaire . pompes à chaleur . pompe à chaleur sol/eau:
+    title: Pompe à chaleur sol/eau
+    type: object
+    properties:
+      surface chauffée:
+        $ref: "#/$defs/équipement . surface chauffée"
+      puissance nominale:
+        $ref: "#/$defs/équipement . puissance nominale"
+      efficacité énergétique saisonnière:
+        $ref: "#/$defs/équipement . efficacité énergétique saisonnière"
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - surface chauffée
+      - puissance nominale
+      - efficacité énergétique saisonnière
+      - usage
+  chauffage et eau chaude sanitaire . réseaux de chaleur . raccordement à un réseau de chaleur:
+    title: Raccordement à un réseau de chaleur
+    type: object
+  chauffage et eau chaude sanitaire . systèmes solaires . système solaire combinée:
+    title: Système solaire combiné
+    type: object
+    properties:
+      surface des capteurs:
+        title: Surface des capteurs solaires posés en m²
+        type: number
+        minimum: 0
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - surface des capteurs
+      - usage
+  chauffage et eau chaude sanitaire . systèmes solaires . système solaire hybride:
+    title: Système solaire hybride
+    type: object
+    properties:
+      surface des capteurs:
+        title: Surface des capteurs solaires posés en m²
+        type: number
+        minimum: 0
+      usage:
+        $ref: "#/$defs/équipement . usage"
+    required:
+      - surface des capteurs
+      - usage
+  isolation des combles et toitures . isolation des planchers de combles perdus:
+    title: Isolation des planchers de combles perdus
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des combles et toitures . isolation des rampants de toiture par l'extérieur:
+    title: Isolation des rampants de toiture par l'extérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des combles et toitures . isolation des rampants de toiture par l'intérieur:
+    title: Isolation des rampants de toiture par l'intérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des combles et toitures . isolation d'une toiture terrasse par l'extérieur:
+    title: Isolation d'une toiture terrasse par l'extérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des murs . isolation des murs par l'extérieur:
+    title: Isolation des murs par l'extérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+  isolation des murs . isolation des murs par l'intérieur:
+    title: Isolation des murs par l'intérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des planchers . isolation d'un plancher par l'extérieur:
+    title: Isolation d'un plancher par l'extérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  isolation des planchers . isolation d'un plancher par l'intérieur:
+    title: Isolation d'un plancher par l'intérieur
+    type: object
+    properties:
+      surface:
+        $ref: "#/$defs/isolant . surface"
+      épaisseur:
+        $ref: "#/$defs/isolant . épaisseur"
+      résistance thermique:
+        $ref: "#/$defs/isolant . résistance thermique"
+      pose d'un pare-vapeur:
+        $ref: "#/$defs/isolant . pose d'un pare-vapeur"
+    required:
+      - surface
+      - épaisseur
+      - résistance thermique
+      - pose d'un pare-vapeur
+  ouvrants . fenêtre de toit isolante:
+    title: Fenêtre de toit isolante
+    type: object
+    properties:
+      surface totale:
+        $ref: "#/$defs/ouvrant . surface totale"
+      coefficient de transmission surfacique:
+        $ref: "#/$defs/ouvrant . coefficient de transmission surfacique"
+      facteur solaire:
+        $ref: "#/$defs/ouvrant . facteur solaire"
+    required:
+      - surface totale
+      - coefficient de transmission surfacique
+      - facteur solaire
+  ouvrants . fenêtre et porte-fenêtre isolante:
+    title: Fenêtre et porte-fenêtre isolante
+    type: object
+    properties:
+      surface totale:
+        $ref: "#/$defs/ouvrant . surface totale"
+      coefficient de transmission surfacique:
+        $ref: "#/$defs/ouvrant . coefficient de transmission surfacique"
+      facteur solaire:
+        $ref: "#/$defs/ouvrant . facteur solaire"
+    required:
+      - surface totale
+      - coefficient de transmission surfacique
+      - facteur solaire
+  ouvrants . porte isolante:
+    title: Porte isolante
+    type: object
+    properties:
+      surface totale:
+        $ref: "#/$defs/ouvrant . surface totale"
+      coefficient de résistance thermique:
+        title: Coefficient de résistance thermique (m².K/W)
+        type: number
+        minimum: 0
+    required:
+      - surface totale
+      - coefficient de résistance thermique
+  protections solaires . fermeture isolante:
+    title: Fermeture isolante
+    type: object
+    properties:
+      surface totale:
+        title: Surface de fermetures isolantes posée (m²)
+        type: number
+        minimum: 0
+      résistance thermique additionnelle:
+        title: Résistance thermique additionnelle (m².K/W)
+        type: number
+        minimum: 0
+    required:
+      - surface totale
+      - résistance thermique additionnelle
+  protections solaires . protection solaire des façades:
+    title: Protection solaire des façades
+    type: object
+    properties:
+      surface protégée:
+        title: Surface totale des façades protégées (m²)
+        type: number
+        minimum: 0
+    required:
+      - surface protégée
+  protections solaires . protection solaire des ouvrants:
+    title: Protection solaire des ouvrants
+    type: object
+    properties:
+      surface protégée:
+        title: Surface totale des ouvrants protégés (m²)
+        type: number
+        minimum: 0
+    required:
+      - surface protégée
+  protections solaires . protection solaire d'une toiture:
+    title: Protection solaire d'une toiture
+    type: object
+    properties:
+      surface protégée:
+        title: Surface totale de la toiture protégée (m²)
+        type: number
+        minimum: 0
+    required:
+      - surface protégée
+  refroidissement . climatiseur:
+    title: Climatiseur
+    type: object
+    properties:
+      puissance frigorifique:
+        title: Puissance frigorifique totale (kW)
+        type: number
+        minimum: 0
+      coefficient d'efficacité énergétique saisonnier:
+        title: Coefficient d'efficacité énergétique saisonnier (SEER)
+        type: number
+        minimum: 0
+      surface refroidie:
+        title: Surface totale refroidie (m²)
+        type: number
+        minimum: 0
+    required:
+      - puissance frigorifique
+      - coefficient d'efficacité énergétique saisonnier
+      - surface refroidie
+  refroidissement . raccordement à un réseau de froid:
+    title: Raccordement à un réseau de froid
+    type: object
+  régulation . dispositif d'affichage et d'interprétation des consommations d'énergie:
+    title: Dispositif d'affichage et d'interprétation des consommations d'énergie
+    type: object
+  régulation . régulation par sonde de température extérieure:
+    title: Régulation par sonde de température extérieure
+    type: object
+  régulation . robinet thermostatique:
+    title: Robinet thermostatique
+    type: object
+  régulation . système de comptage individuel d'énergie de chauffage:
+    title: Système de comptage individuel d'énergie de chauffage
+    type: object
+  régulation . système de régulation par programmation d'intermittence:
+    title: Système de régulation par programmation d'intermittence
+    type: object
+  régulation . système de régulation de la consommation d'un chauffe-eau électrique à effet Joule:
+    title: Système de régulation de la consommation d'un chauffe-eau électrique à effet Joule
+    type: object
+  réseau . abaissement de la température de retour vers un réseau de chaleur:
+    title: Abaissement de la température de retour vers un réseau de chaleur
+    type: object
+  réseau . conduit d'évacuation des produits de combustion:
+    title: Conduit d'évacuation des produits de combustion
+    type: object
+  réseau . désambouage d'un réseau de chauffage:
+    title: Désambouage d'un réseau de chauffage
+    type: object
+  réseau . désambouage d'un réseau d'eau chaude sanitaire:
+    title: Désambouage d'un réseau d'eau chaude sanitaire
+    type: object
+  réseau . isolation d'un réseau de chauffage:
+    title: Isolation d'un réseau de chauffage
+    type: object
+  réseau . isolation d'un réseau d'eau chaude sanitaire:
+    title: Isolation d'un réseau d'eau chaude sanitaire
+    type: object
+  réseau . optimiseur de relance:
+    title: Optimiseur de relance
+    type: object
+  réseau . récupérateur de chaleur à condensation:
+    title: Récupérateur de chaleur à condensation
+    type: object
+  réseau . système de variation électronique de vitesse sur une pompe:
+    title: Système de variation électronique de vitesse sur une pompe
+    type: object
+  ventilation . puit canadien:
+    title: Puit canadien
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
+  ventilation . puit provençal:
+    title: Puit provençal
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
+  ventilation . ventilation hybride:
+    title: Ventilation hybride
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
+  ventilation . ventilation mécanique double flux:
+    title: Ventilation mécanique double flux
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
+  ventilation . ventilation mécanique répartie:
+    title: Ventilation mécanique répartie
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
+  ventilation . ventilation mécanique simple flux:
+    title: Ventilation mécanique simple flux
+    type: object
+    properties:
+      surface ventilée:
+        $ref: "#/$defs/équipement . surface ventilée"
+    required:
+      - surface ventilée
